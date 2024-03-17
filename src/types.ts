@@ -65,6 +65,7 @@ export class Library {
       URL: entry.URL,
       year: entry.year?.toString(),
       zoteroSelectURI: entry.zoteroSelectURI,
+      annotation: entry.annotation,
     };
 
     return { entry: entry.toJSON(), ...shortcuts };
@@ -170,6 +171,8 @@ export abstract class Entry {
 
   public abstract publisher?: string;
   public abstract publisherPlace?: string;
+
+  public abstract annotation?: string;
 
   /**
    * BibLaTeX-specific properties
@@ -342,6 +345,7 @@ const BIBLATEX_PROPERTY_MAPPING: Record<string, string> = {
   year: '_year',
   publisher: 'publisher',
   note: '_note',
+  annotation: 'annotation',
 };
 
 // BibLaTeX parser returns arrays of property values (allowing for repeated
@@ -383,6 +387,7 @@ export class EntryBibLaTeXAdapter extends Entry {
   title?: string;
   titleShort?: string;
   URL?: string;
+  annotation?: string;
   _year?: string;
   _note?: string[];
 
