@@ -172,7 +172,10 @@ export abstract class Entry {
   public abstract publisher?: string;
   public abstract publisherPlace?: string;
 
-  public abstract annotation?: string;
+  protected _annotation?: string;
+  public get annotation(): string {
+    return this.annotation ? this._annotation : "";
+  }
 
   /**
    * BibLaTeX-specific properties
@@ -387,7 +390,7 @@ export class EntryBibLaTeXAdapter extends Entry {
   title?: string;
   titleShort?: string;
   URL?: string;
-  annotation?: string;
+  _annotation?: string;
   _year?: string;
   _note?: string[];
 
