@@ -23,6 +23,7 @@ export const TEMPLATE_VARIABLES = {
   eprinttype: '',
   eventPlace: 'Location of event',
   note: '',
+  annotation: '',
   page: 'Page or page range',
   publisher: '',
   publisherPlace: 'Location of publisher',
@@ -172,11 +173,6 @@ export abstract class Entry {
   public abstract publisher?: string;
   public abstract publisherPlace?: string;
 
-  protected _annotation?: string;
-  public get annotation(): string {
-    return this.annotation ? this._annotation : "";
-  }
-
   /**
    * BibLaTeX-specific properties
    */
@@ -196,6 +192,12 @@ export abstract class Entry {
     return this._note
       ?.map((el) => el.replace(/(zotero:\/\/.+)/g, '[Link]($1)'))
       .join('\n\n');
+  }
+
+  protected _annotation?: string;
+
+  public get annotation(): string {
+    return this._annotation ? this._annotation[0].split(" ")[0] : "";
   }
 
   /**
@@ -245,6 +247,7 @@ export interface EntryDataCSL {
   'publisher-place'?: string;
   title?: string;
   'title-short'?: string;
+  'annotation'?: string;
   URL?: string;
 }
 
@@ -348,7 +351,7 @@ const BIBLATEX_PROPERTY_MAPPING: Record<string, string> = {
   year: '_year',
   publisher: 'publisher',
   note: '_note',
-  annotation: 'annotation',
+  annotation: '_annotation',
 };
 
 // BibLaTeX parser returns arrays of property values (allowing for repeated
@@ -372,6 +375,7 @@ const BIBLATEX_PROPERTY_TAKE_FIRST: string[] = [
   'venue',
   '_year',
   'publisher',
+  '_annotation'
 ];
 
 export class EntryBibLaTeXAdapter extends Entry {
